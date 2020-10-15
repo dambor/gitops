@@ -14,7 +14,7 @@ spec:
         app: petclinic
     spec:
       containers:
-      - image: harbor.apps.gdambor.com/library/petclinic:b2.20201015.191520
+      - image: harbor.apps.gdambor.com/library/petclinic:b3.20201015.192221
         name: petclinic
         ports:
         - containerPort: 8080
