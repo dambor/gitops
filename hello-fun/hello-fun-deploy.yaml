@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-fun
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: hello-fun
+  template:
+    metadata:
+      labels:
+        app: hello-fun
+    spec:
+      containers:
+      - image: harbor.apps.gdambor.com/library/hello-fun
+        name: hello-fun
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-fun-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: hello-fun
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hello-fun-ingress
+  namespace: default
+spec:
+  rules:
+  - host: hello-fun.apps.gdambor.com
+    http:
+      paths:
+      - backend:
+          serviceName: hello-fun-svc
+          servicePort: 80
