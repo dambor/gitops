@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-wf
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: petclinic-wf
+  template:
+    metadata:
+      labels:
+        app: petclinic-wf
+    spec:
+      containers:
+      - image: harbor.apps.gdambor.com/library/petclinic-wf:b1.20201016.204737
+        name: petclinic-wf
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic-wf-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: petclinic-wf
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: petclinic-wf-ingress
+  namespace: default
+spec:
+  rules:
+  - host: petclinic-wf.apps.gdambor.com
+    http:
+      paths:
+      - backend:
+          serviceName: petclinic-wf-svc
+          servicePort: 80
