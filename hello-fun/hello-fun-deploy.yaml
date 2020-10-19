@@ -14,7 +14,7 @@ spec:
         app: hello-fun
     spec:
       containers:
-      - image: harbor.apps.gdambor.com/library/hello-fun
+      - image: harbor.apps.gdambor.com/library/hello-fun:b1.20201019.135259
         name: hello-fun
 ---
 apiVersion: v1
